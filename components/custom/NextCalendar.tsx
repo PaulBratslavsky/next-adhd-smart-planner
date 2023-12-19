@@ -12,7 +12,7 @@ export default function NextCalendar() {
     ? new Date(params.date.toString().split("-").join("/"))
     : new Date();
 
-  const [date, setDate] = useState<Date>(selectedDate);
+  const [ _, setDate] = useState<Date>(selectedDate);
 
   function handleSelect(date: Date) {
     if (dateToString(date)) {
@@ -24,7 +24,7 @@ export default function NextCalendar() {
   return (
     <div className="rounded-md border p-1 flex-row justify-center items-center">
       <header className="flex justify-center items-center my-2">
-        <h1 className="text-2xl">{date.toDateString()}</h1>
+        <h1 className="text-2xl">{selectedDate.toDateString()}</h1>
       </header>
       <Calendar
         mode="single"
