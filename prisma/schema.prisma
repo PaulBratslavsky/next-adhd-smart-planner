@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model CalendarDay {
+  id        String   @id
+  date      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  Task      Task[]
+}
+
+model Task {
+  id            String      @id
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime
+  title         String
+  description   String?
+  completed     Boolean     @default(false)
+  calendarDayId String
+  CalendarDay   CalendarDay @relation(fields: [calendarDayId], references: [id], onDelete: Cascade)
+  TaskItem      TaskItem[]
+}
+
+model TaskItem {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  title     String
+  completed Boolean  @default(false)
+  taskId    String
+  Task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+}
+
+model documents {
+  id        String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  content   String?
+  embedding Unsupported("vector")?
+}
