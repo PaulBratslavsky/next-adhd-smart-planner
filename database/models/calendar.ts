@@ -1,7 +1,7 @@
 import prisma from "@/database/prisma";
 import { CalendarDay } from "@prisma/client";
 
-export async function find(date: string) {
+export async function findDay(date: string) {
   const entry = await prisma.calendarDay.findMany({
     where: { date: date },
     include: {
@@ -18,7 +18,7 @@ export async function find(date: string) {
   return entry[0];
 }
 
-export async function create(date: string) {
+export async function createDay(date: string) {
   const entry = await prisma.calendarDay.create({
     data: { date: date } as CalendarDay
   });

@@ -1,14 +1,14 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { initializeDayAction } from "@/actions/task/initialize-day-action";
+import { createTaskAction } from "@/actions/task/create-task-action";
 
-export default function InitializeDayForm({ date }: { date: string }) {
+export default function CreateTaskForm({ date }: { date: string }) {
   return (
-    <form action={initializeDayAction}>
+    <form action={createTaskAction}>
       <Card className="flex justify-center items-center h-96">
         <input type="hidden" name="date" value={date} />
         <Button type="submit" disabled={false}>
-          Get Started
+          Add Task
         </Button>
       </Card>
     </form>

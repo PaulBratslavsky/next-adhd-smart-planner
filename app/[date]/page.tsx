@@ -1,6 +1,9 @@
-import { find } from "@/database/models/calendar";
+import { findDay } from "@/database/models/calendar";
 import { Card } from "@/components/ui/card";
 import InitializeDayForm from "@/components/custom/InitializeDayForm";
+import CreateTaskForm from "@/components/custom/CreateTaskForm";
+import DeleteTaskForm from "@/components/custom/DeleteTaskForm";
+import UpdateTaskForm from "@/components/custom/UpdateTaskForm";
 
 interface ParamsProps {
   readonly params: {
@@ -9,14 +12,13 @@ interface ParamsProps {
 }
 
 async function loadDateData(date: string) {
-  return await find(date);
+  return await findDay(date);
 }
 
 export default async function DynamicDateRoute({ params }: ParamsProps) {
   const data = await loadDateData(params.date);
-  console.log(params.date, "date");
 
-  if (!data) return <InitializeDayForm date={params.date}/>;
+  if (!data) return <InitializeDayForm date={params.date} />;
 
   return (
     <Card className="p-4 w-full min-h-[calc(100vh-2rem)]">
@@ -24,12 +26,13 @@ export default async function DynamicDateRoute({ params }: ParamsProps) {
         {data?.tasks &&
           data.tasks.map((task) => {
             return (
-              <Card className="p-2" key={task.id}>
-                <h3>{task.title}</h3>
-                <p>{task.description}</p>
+              <Card className="relative min-h-96 pb-14" key={task.id}>
+                <UpdateTaskForm task={task} />
+                <DeleteTaskForm id={task.id} date={params.date} />
               </Card>
             );
           })}
+        <CreateTaskForm date={params.date} />
       </div>
     </Card>
   );
