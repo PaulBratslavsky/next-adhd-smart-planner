@@ -34,3 +34,18 @@ export async function deleteTask(id: string) {
     throw new Error("Error deleting task");
   }
 }
+
+export async function getActiveTasks() {
+  const entries = await prisma.task.findMany({
+    where: { completed: false },
+    orderBy: { createdAt: "desc" },
+  });
+  return entries;
+}
+
+export async function getActiveTasksCount() {
+  const entries = await prisma.task.count({
+    where: { completed: false },
+  });
+  return entries;
+}
