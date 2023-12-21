@@ -1,13 +1,14 @@
 import prisma from "@/database/prisma";
+import { CalendarDay } from "@prisma/client";
 
-export async function getCalendarDayData(date: string) {
+export async function find(date: string) {
   const entry = await prisma.calendarDay.findMany({
     where: { date: date },
     include: {
-      Task: {
+      tasks: {
         orderBy: { createdAt: "asc" },
         include: {
-          TaskItem: {
+          taskItems: {
             orderBy: { createdAt: "asc" },
           },
         },
@@ -15,5 +16,12 @@ export async function getCalendarDayData(date: string) {
     },
   });
   return entry[0];
+}
+
+export async function create(date: string) {
+  const entry = await prisma.calendarDay.create({
+    data: { date: date } as CalendarDay
+  });
+  return entry;
 }
 
